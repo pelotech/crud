@@ -876,7 +876,8 @@ export class TypeOrmCrudService<T> extends CrudService<T> {
     const likeOperator =
       this.dbName === 'postgres' ? 'ILIKE' : /* istanbul ignore next */ 'LIKE';
     let str: string;
-    let params: ObjectLiteral;
+    // NOTE: may be overridden by specific operators
+    let params: ObjectLiteral = { [param]: cond.value };
 
     if (cond.operator[0] !== '$') {
       cond.operator = ('$' + cond.operator) as ComparisonOperator;
@@ -995,14 +996,20 @@ export class TypeOrmCrudService<T> extends CrudService<T> {
         str = `LOWER(${field}) NOT IN (:...${param})`;
         break;
 
+      case '$contArr':
+        this.checkFilterIsArray(cond);
+        str = `${field} @> ARRAY[:...${param}]`;
+        break;
+
+      case '$intersectsArr':
+        this.checkFilterIsArray(cond);
+        str = `${field} && ARRAY[:...${param}]`;
+        break;
+
       /* istanbul ignore next */
       default:
         str = `${field} = :${param}`;
         break;
-    }
-
-    if (typeof params === 'undefined') {
-      params = { [param]: cond.value };
     }
 
     return { str, params };
