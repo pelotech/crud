@@ -1,6 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
-import { objKeys, isString, isFunction } from '@nestjsx/util';
-import { RequestQueryBuilder } from '@nestjsx/crud-request';
+import { objKeys, isString, isFunction } from '@pelotech/nestjsx-util';
+import { RequestQueryBuilder } from '@pelotech/nestjsx-crud-request';
 
 import { safeRequire } from '../util';
 import { R } from './reflection.helper';

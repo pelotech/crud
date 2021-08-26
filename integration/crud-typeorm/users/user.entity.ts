@@ -17,7 +17,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { CrudValidationGroups } from '@nestjsx/crud';
+import { CrudValidationGroups } from '@pelotech/nestjsx-crud';
 
 import { BaseEntity } from '../base-entity';
 import { UserProfile } from '../users-profiles/user-profile.entity';

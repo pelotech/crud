@@ -7,7 +7,7 @@ import {
   isNumber,
   isNil,
   objKeys,
-} from '@nestjsx/util';
+} from '@pelotech/nestjsx-util';
 
 import { RequestQueryException } from './exceptions';
 import { ParamsOptions, ParamOption } from './interfaces';

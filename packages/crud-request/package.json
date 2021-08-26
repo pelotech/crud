@@ -1,7 +1,7 @@
 {
-  "name": "@nestjsx/crud-request",
+  "name": "@pelotech/nestjsx-crud-request",
   "description": "NestJS CRUD for RESTful APIs - request query builder (temporary patch)",
-  "version": "4.6.3-pre",
+  "version": "4.6.3",
   "license": "MIT",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -13,10 +13,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/nestjsx/crud.git"
+    "url": "https://github.com/pelotech/crud.git"
   },
   "bugs": {
-    "url": "https://github.com/nestjsx/crud/issues"
+    "url": "https://github.com/pelotech/crud/issues"
   },
   "keywords": [
     "typescript",
@@ -48,7 +48,7 @@
     "build": "npx tsc -b"
   },
   "dependencies": {
-    "@nestjsx/util": "~4.6.2",
+    "@pelotech/nestjsx-util": "4.6.3",
     "qs": "^6.8.0"
   }
 }
