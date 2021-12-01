@@ -1,26 +1,31 @@
 import { HttpStatus } from '@nestjs/common';
 import { objKeys, isString, isFunction } from '@pelotech/nestjsx-util';
 import { RequestQueryBuilder } from '@pelotech/nestjsx-crud-request';
-
+import { MergedCrudOptions, ParamsOptions } from '../interfaces';
+import { BaseRouteName } from '../types';
 import { safeRequire } from '../util';
 import { R } from './reflection.helper';
-import { ParamsOptions, MergedCrudOptions } from '../interfaces';
-import { BaseRouteName } from '../types';
+const pluralize = require('pluralize');
 
-export const swagger = safeRequire('@nestjs/swagger');
-export const swaggerConst = safeRequire('@nestjs/swagger/dist/constants');
-export const swaggerPkgJson = safeRequire('@nestjs/swagger/package.json');
+export const swagger = safeRequire('@nestjs/swagger', () => require('@nestjs/swagger'));
+export const swaggerConst = safeRequire('@nestjs/swagger/dist/constants', () =>
+  require('@nestjs/swagger/dist/constants'),
+);
+export const swaggerPkgJson = safeRequire('@nestjs/swagger/package.json', () =>
+  require('@nestjs/swagger/package.json'),
+);
 
 export class Swagger {
   static operationsMap(modelName): { [key in BaseRouteName]: string } {
     return {
-      getManyBase: `Retrieve many ${modelName}`,
-      getOneBase: `Retrieve one ${modelName}`,
-      createManyBase: `Create many ${modelName}`,
-      createOneBase: `Create one ${modelName}`,
-      updateOneBase: `Update one ${modelName}`,
-      replaceOneBase: `Replace one ${modelName}`,
-      deleteOneBase: `Delete one ${modelName}`,
+      getManyBase: `Retrieve multiple ${pluralize(modelName)}`,
+      getOneBase: `Retrieve a single ${modelName}`,
+      createManyBase: `Create multiple ${pluralize(modelName)}`,
+      createOneBase: `Create a single ${modelName}`,
+      updateOneBase: `Update a single ${modelName}`,
+      replaceOneBase: `Replace a single ${modelName}`,
+      deleteOneBase: `Delete a single ${modelName}`,
+      recoverOneBase: `Recover one ${modelName}`,
     };
   }
 
@@ -188,6 +193,27 @@ export class Swagger {
                   description: 'Delete one base response',
                 },
           };
+        case 'recoverOneBase':
+          /* istanbul ignore if */
+          if (oldVersion) {
+            return {
+              [HttpStatus.OK]: routes.recoverOneBase.returnRecovered
+                ? {
+                    type: swaggerModels.delete,
+                  }
+                : {},
+            };
+          }
+          return {
+            [HttpStatus.OK]: routes.recoverOneBase.returnRecovered
+              ? {
+                  description: 'Recover one base response',
+                  schema: { $ref: swagger.getSchemaPath(swaggerModels.recover.name) },
+                }
+              : {
+                  description: 'Recover one base response',
+                },
+          };
         default:
           const dto = swaggerModels[name.split('OneBase')[0]];
 
@@ -224,7 +250,7 @@ export class Swagger {
       : /* istanbul ignore next */ [];
   }
 
-  static createQueryParamsMeta(name: BaseRouteName) {
+  static createQueryParamsMeta(name: BaseRouteName, options: MergedCrudOptions) {
     /* istanbul ignore if */
     if (!swaggerConst) {
       return [];
@@ -243,6 +269,7 @@ export class Swagger {
       offset,
       page,
       cache,
+      includeDeleted,
     } = Swagger.getQueryParamsNames();
     const oldVersion = Swagger.getSwaggerVersion() < 4;
     const docsLink = (a: string) =>
@@ -438,22 +465,56 @@ export class Swagger {
         }
       : { ...cacheMetaBase, schema: { type: 'integer', minimum: 0, maximum: 1 } };
 
+    const includeDeletedMetaBase = {
+      name: includeDeleted,
+      description: `Include deleted. ${docsLink('includeDeleted')}`,
+      required: false,
+      in: 'query',
+    };
+    const includeDeletedMeta = oldVersion
+      ? /* istanbul ignore next */ {
+          ...includeDeletedMetaBase,
+          type: 'integer',
+          minimum: 0,
+          maximum: 1,
+        }
+      : {
+          ...includeDeletedMetaBase,
+          schema: { type: 'integer', minimum: 0, maximum: 1 },
+        };
+
     switch (name) {
       case 'getManyBase':
-        return [
-          fieldsMeta,
-          searchMeta,
-          filterMeta,
-          orMeta,
-          sortMeta,
-          joinMeta,
-          limitMeta,
-          offsetMeta,
-          pageMeta,
-          cacheMeta,
-        ];
+        return options.query.softDelete
+          ? [
+              fieldsMeta,
+              searchMeta,
+              filterMeta,
+              orMeta,
+              sortMeta,
+              joinMeta,
+              limitMeta,
+              offsetMeta,
+              pageMeta,
+              cacheMeta,
+              includeDeletedMeta,
+            ]
+          : [
+              fieldsMeta,
+              searchMeta,
+              filterMeta,
+              orMeta,
+              sortMeta,
+              joinMeta,
+              limitMeta,
+              offsetMeta,
+              pageMeta,
+              cacheMeta,
+            ];
       case 'getOneBase':
-        return [fieldsMeta, joinMeta, cacheMeta];
+        return options.query.softDelete
+          ? [fieldsMeta, joinMeta, cacheMeta, includeDeletedMeta]
+          : [fieldsMeta, joinMeta, cacheMeta];
       default:
         return [];
     }
@@ -479,6 +540,7 @@ export class Swagger {
       offset: name('offset'),
       page: name('page'),
       cache: name('cache'),
+      includeDeleted: name('includeDeleted'),
     };
   }
 

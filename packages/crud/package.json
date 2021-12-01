@@ -1,7 +1,7 @@
 {
   "name": "@pelotech/nestjsx-crud",
-  "description": "NestJS CRUD for RESTful APIs (temporary patch)",
-  "version": "4.6.3",
+  "description": "NestJs CRUD for RESTful APIs",
+  "version": "5.0.0-alpha.3",
   "license": "MIT",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -40,9 +40,10 @@
     "build": "npx tsc -b"
   },
   "dependencies": {
-    "@pelotech/nestjsx-crud-request": "4.6.3",
-    "@pelotech/nestjsx-util": "4.6.3",
-    "deepmerge": "^3.2.0"
+    "@pelotech/nestjsx-crud-request": "^5.0.0-alpha.3",
+    "@pelotech/nestjsx-util": "^5.0.0-alpha.3",
+    "deepmerge": "^3.2.0",
+    "pluralize": "^8.0.0"
   },
   "peerDependencies": {
     "class-transformer": "*",

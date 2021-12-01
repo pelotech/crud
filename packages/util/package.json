@@ -1,7 +1,6 @@
 {
   "name": "@pelotech/nestjsx-util",
-  "description": "NestJS CRUD for RESTful APIs - util",
-  "version": "4.6.3",
+  "version": "5.0.0-alpha.3",
   "license": "MIT",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
