@@ -102,7 +102,7 @@ describe('#crud', () => {
     });
 
     it('should use global config', (done) => {
-      return request(server)
+      request(server)
         .get('/test')
         .end((_, res) => {
           expect(res.status).toBe(200);
@@ -118,7 +118,7 @@ describe('#crud', () => {
         });
     });
     it('should use merged config', (done) => {
-      return request(server)
+      request(server)
         .get('/test2')
         .end((_, res) => {
           expect(res.status).toBe(200);
@@ -143,7 +143,7 @@ describe('#crud', () => {
         });
     });
     it('should exclude route, 1', (done) => {
-      return request(server)
+      request(server)
         .post('/test/bulk')
         .send({})
         .end((_, res) => {
@@ -152,7 +152,7 @@ describe('#crud', () => {
         });
     });
     it('should exclude route, 1', (done) => {
-      return request(server)
+      request(server)
         .post('/test2/bulk')
         .send({})
         .end((_, res) => {

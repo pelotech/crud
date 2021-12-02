@@ -66,7 +66,7 @@ describe('#crud-typeorm', () => {
 
     describe('#getAllBase', () => {
       it('should return an array of all entities', (done) => {
-        return request(server)
+        request(server)
           .get('/companies0')
           .end((_, res) => {
             expect(res.status).toBe(200);
@@ -120,7 +120,7 @@ describe('#crud-typeorm', () => {
 
     describe('#getAllBase', () => {
       it('should return an array of all entities', (done) => {
-        return request(server)
+        request(server)
           .get('/companies')
           .end((_, res) => {
             expect(res.status).toBe(200);
@@ -131,7 +131,7 @@ describe('#crud-typeorm', () => {
       });
       it('should return an entities with limit', (done) => {
         const query = qb.setLimit(5).query();
-        return request(server)
+        request(server)
           .get('/companies')
           .query(query)
           .end((_, res) => {
@@ -147,7 +147,7 @@ describe('#crud-typeorm', () => {
           .setPage(1)
           .sortBy({ field: 'id', order: 'DESC' })
           .query();
-        return request(server)
+        request(server)
           .get('/companies')
           .query(query)
           .end((_, res) => {
@@ -332,7 +332,7 @@ describe('#crud-typeorm', () => {
 
     describe('#getAllBase', () => {
       it('should return an array of all entities', (done) => {
-        return request(server)
+        request(server)
           .get('/companies?include_deleted=1')
           .end((_, res) => {
             expect(res.status).toBe(200);
@@ -342,7 +342,7 @@ describe('#crud-typeorm', () => {
       });
       it('should return an entities with limit', (done) => {
         const query = qb.setLimit(5).query();
-        return request(server)
+        request(server)
           .get('/companies')
           .query(query)
           .end((_, res) => {
@@ -357,7 +357,7 @@ describe('#crud-typeorm', () => {
           .setPage(1)
           .sortBy({ field: 'id', order: 'DESC' })
           .query();
-        return request(server)
+        request(server)
           .get('/companies')
           .query(query)
           .end((_, res) => {
@@ -376,7 +376,7 @@ describe('#crud-typeorm', () => {
           queryObj.setLimit(10);
         }
         const query = queryObj.query();
-        return request(server)
+        request(server)
           .get('/companies')
           .query(query)
           .end((_, res) => {
@@ -394,7 +394,7 @@ describe('#crud-typeorm', () => {
 
     describe('#getOneBase', () => {
       it('should return status 404', (done) => {
-        return request(server)
+        request(server)
           .get('/companies/333')
           .end((_, res) => {
             expect(res.status).toBe(404);
@@ -402,7 +402,7 @@ describe('#crud-typeorm', () => {
           });
       });
       it('should return status 404 for deleted entity', (done) => {
-        return request(server)
+        request(server)
           .get('/companies/9')
           .end((_, res) => {
             expect(res.status).toBe(404);
@@ -410,7 +410,7 @@ describe('#crud-typeorm', () => {
           });
       });
       it('should return a deleted entity if include_deleted query param is specified', (done) => {
-        return request(server)
+        request(server)
           .get('/companies/9?include_deleted=1')
           .end((_, res) => {
             expect(res.status).toBe(200);
@@ -419,7 +419,7 @@ describe('#crud-typeorm', () => {
           });
       });
       it('should return an entity, 1', (done) => {
-        return request(server)
+        request(server)
           .get('/companies/1')
           .end((_, res) => {
             expect(res.status).toBe(200);
@@ -429,7 +429,7 @@ describe('#crud-typeorm', () => {
       });
       it('should return an entity, 2', (done) => {
         const query = qb.select(['domain']).query();
-        return request(server)
+        request(server)
           .get('/companies/1')
           .query(query)
           .end((_, res) => {
@@ -440,7 +440,7 @@ describe('#crud-typeorm', () => {
           });
       });
       it('should return an entity with compound key', (done) => {
-        return request(server)
+        request(server)
           .get('/users4/1/5')
           .end((_, res) => {
             expect(res.status).toBe(200);
@@ -449,7 +449,7 @@ describe('#crud-typeorm', () => {
           });
       });
       it('should return an entity with and set cache', (done) => {
-        return request(server)
+        request(server)
           .get('/companies/1/users/1')
           .end((_, res) => {
             expect(res.status).toBe(200);
@@ -460,7 +460,7 @@ describe('#crud-typeorm', () => {
       });
 
       it('should return an entity with its embedded entity properties', (done) => {
-        return request(server)
+        request(server)
           .get('/companies/1/users/1')
           .end((_, res) => {
             expect(res.status).toBe(200);
@@ -474,7 +474,7 @@ describe('#crud-typeorm', () => {
 
     describe('#createOneBase', () => {
       it('should return status 400', (done) => {
-        return request(server)
+        request(server)
           .post('/companies')
           .send('')
           .end((_, res) => {
@@ -487,7 +487,7 @@ describe('#crud-typeorm', () => {
           name: 'test0',
           domain: 'test0',
         };
-        return request(server)
+        request(server)
           .post('/companies')
           .send(dto)
           .end((_, res) => {
@@ -508,7 +508,7 @@ describe('#crud-typeorm', () => {
             name: 'testName',
           },
         };
-        return request(server)
+        request(server)
           .post('/companies/1/users')
           .send(dto)
           .end((_, res) => {
@@ -520,7 +520,7 @@ describe('#crud-typeorm', () => {
       });
       it('should return with `returnShallow`', (done) => {
         const dto: any = { description: 'returnShallow is true' };
-        return request(server)
+        request(server)
           .post('/devices')
           .send(dto)
           .end((_, res) => {
@@ -535,7 +535,7 @@ describe('#crud-typeorm', () => {
     describe('#createManyBase', () => {
       it('should return status 400', (done) => {
         const dto = { bulk: [] };
-        return request(server)
+        request(server)
           .post('/companies/bulk')
           .send(dto)
           .end((_, res) => {
@@ -556,7 +556,7 @@ describe('#crud-typeorm', () => {
             },
           ],
         };
-        return request(server)
+        request(server)
           .post('/companies/bulk')
           .send(dto)
           .end((_, res) => {
@@ -571,7 +571,7 @@ describe('#crud-typeorm', () => {
     describe('#updateOneBase', () => {
       it('should return status 404', (done) => {
         const dto = { name: 'updated0' };
-        return request(server)
+        request(server)
           .patch('/companies/333')
           .send(dto)
           .end((_, res) => {
@@ -581,7 +581,7 @@ describe('#crud-typeorm', () => {
       });
       it('should return updated entity, 1', (done) => {
         const dto = { name: 'updated0' };
-        return request(server)
+        request(server)
           .patch('/companies/1')
           .send(dto)
           .end((_, res) => {
@@ -592,7 +592,7 @@ describe('#crud-typeorm', () => {
       });
       it('should return updated entity, 2', (done) => {
         const dto = { isActive: false, companyId: 5 };
-        return request(server)
+        request(server)
           .patch('/companies/1/users/22')
           .send(dto)
           .end((_, res) => {
@@ -607,7 +607,7 @@ describe('#crud-typeorm', () => {
     describe('#replaceOneBase', () => {
       it('should create entity', (done) => {
         const dto = { name: 'updated0', domain: 'domain0' };
-        return request(server)
+        request(server)
           .put('/companies/333')
           .send(dto)
           .end((_, res) => {
@@ -618,7 +618,7 @@ describe('#crud-typeorm', () => {
       });
       it('should return updated entity, 1', (done) => {
         const dto = { name: 'updated0' };
-        return request(server)
+        request(server)
           .put('/companies/1')
           .send(dto)
           .end((_, res) => {
@@ -631,7 +631,7 @@ describe('#crud-typeorm', () => {
 
     describe('#deleteOneBase', () => {
       it('should return status 404', (done) => {
-        return request(server)
+        request(server)
           .delete('/companies/3333')
           .end((_, res) => {
             expect(res.status).toBe(404);
@@ -639,7 +639,7 @@ describe('#crud-typeorm', () => {
           });
       });
       it('should softly delete entity', (done) => {
-        return request(server)
+        request(server)
           .delete('/companies/5')
           .end((_, res) => {
             expect(res.status).toBe(200);
@@ -647,7 +647,7 @@ describe('#crud-typeorm', () => {
           });
       });
       it('should not return softly deleted entity', (done) => {
-        return request(server)
+        request(server)
           .get('/companies/5')
           .end((_, res) => {
             expect(res.status).toBe(404);
@@ -655,7 +655,7 @@ describe('#crud-typeorm', () => {
           });
       });
       it('should recover softly deleted entity', (done) => {
-        return request(server)
+        request(server)
           .patch('/companies/5/recover')
           .end((_, res) => {
             expect(res.status).toBe(200);
@@ -663,7 +663,7 @@ describe('#crud-typeorm', () => {
           });
       });
       it('should return recovered entity', (done) => {
-        return request(server)
+        request(server)
           .get('/companies/5')
           .end((_, res) => {
             expect(res.status).toBe(200);
@@ -672,7 +672,7 @@ describe('#crud-typeorm', () => {
           });
       });
       it('should return deleted entity', (done) => {
-        return request(server)
+        request(server)
           .delete('/companies/1/users/22')
           .end((_, res) => {
             expect(res.status).toBe(200);
