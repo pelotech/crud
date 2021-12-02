@@ -2,6 +2,7 @@ import * as request from 'supertest';
 import { Test } from '@nestjs/testing';
 import { Controller, INestApplication } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
+
 import { CrudRoutesFactory } from '../src/crud/crud-routes.factory';
 import { Swagger } from '../src/crud/swagger.helper';
 import { Crud } from '../src/decorators';
@@ -108,7 +109,8 @@ describe('#crud', () => {
     });
 
     it('should use crudRoutesFactory override', () => {
-      const testController = app.get('TestController');
+      const testController = app.get(TestController);
+      // @ts-ignore
       const { operationId } = Swagger.getOperation(testController.replaceOneBase);
       expect(operationId).toEqual('_replaceOneBaseTestModel');
     });
