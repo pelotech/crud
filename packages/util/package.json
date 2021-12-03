@@ -1,6 +1,6 @@
 {
   "name": "@pelotech/nestjsx-util",
-  "version": "5.0.0-alpha.3",
+  "version": "6.0.0",
   "license": "MIT",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",

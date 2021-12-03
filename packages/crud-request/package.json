@@ -1,7 +1,7 @@
 {
   "name": "@pelotech/nestjsx-crud-request",
   "description": "NestJS CRUD for RESTful APIs - request query builder (temporary patch)",
-  "version": "5.0.0-alpha.3",
+  "version": "6.0.0",
   "license": "MIT",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -48,7 +48,7 @@
     "build": "npx tsc -b"
   },
   "dependencies": {
-    "@pelotech/nestjsx-util": "^5.0.0-alpha.3",
+    "@pelotech/nestjsx-util": "^6.0.0",
     "qs": "^6.10.0"
   }
 }
